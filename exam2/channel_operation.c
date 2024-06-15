@@ -278,7 +278,7 @@ static int chan_send_unbuf(struct chan *ch, void *data)
 
         if (atomic_fetch_sub_explicit(&ch->recv_ftx, 1, memory_order_acquire) ==
             CHAN_WAITING)
-            futex_wake(&ch->recv_ftx, CCCC);
+            futex_wake(&ch->recv_ftx, 1);
     } else {
         if (atomic_fetch_add_explicit(&ch->send_ftx, 1, memory_order_acquire) ==
             CHAN_NOT_READY) {
