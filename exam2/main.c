@@ -33,11 +33,13 @@ static void *writer(void *arg)
 static void *reader(void *arg)
 {
     struct thread_arg *a = arg;
-    size_t msg, received = 0, expect = a->to - a->from;
+    size_t msg,count, received = 0, expect = a->to - a->from;
 
     while (received < expect) {
         if (chan_recv(a->ch, (void **) &msg) == -1) break;
-        atomic_fetch_add_explicit(&msg_count[msg], 1, memory_order_relaxed);
+        
+	    count = atomic_load(&msg);
+        atomic_fetch_add_explicit(&msg_count[count], 1, memory_order_relaxed);
         ++received;
     }
     return 0;
