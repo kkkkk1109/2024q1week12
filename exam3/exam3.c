@@ -281,6 +281,7 @@ int main(int argc, char *argv[])
         INIT_BARRIER(i) = &barrier;
         error = pthread_create(&consumer_thread, &consumer_attr, consumer,
                                INIT_PTR(i));
+        pthread_detach(consumer_thread);
     }
     if (error != 0) {
         perror("BW");
@@ -291,6 +292,8 @@ int main(int argc, char *argv[])
     INIT_BARRIER(0) = &barrier;
     producer(INIT_PTR(0), max_threads);
     printf("Done!\n");
-
+    
+    
+    
     return 0;
 }
